@@ -8,7 +8,7 @@ fn build_client() -> Client {
         .redirect(Policy::none())
         //.redirect(Policy::limited(1))
         // default tor proxy
-        //.proxy(Proxy::http("socks5h://127.0.0.1:9050").expect("Tor Proxy not running"))
+        .proxy(Proxy::all("socks5h://127.0.0.1:9050").expect("Tor Proxy not running"))
         .build().unwrap()
 }
 /// returns json from account_name on instagram
