@@ -23,7 +23,7 @@ fn main() {
         let mut posts: Vec<parse::Post> = Vec::new();
 
         // using unix timestamp
-        let filename = format!("./data/{}-{}.json", Utc::now().format("%s"), acc.to_string());
+        let filename = format!("./data/json/{}-{}.json", Utc::now().format("%s"), acc.to_string());
         let data = fetch::get_profile_info(acc.to_string());
 
         if !data.is_empty() {
