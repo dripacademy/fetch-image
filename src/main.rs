@@ -36,7 +36,7 @@ fn main() {
                 }
             }
 
-            fs::write(filename.to_string(), serde_json::to_string(&posts).unwrap()).unwrap();
+            fs::write(filename.to_string(), serde_json::to_string_pretty(&posts).unwrap()).unwrap();
             info!("Wrote file: {}", filename);
         }
     }
