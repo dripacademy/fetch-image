@@ -24,7 +24,10 @@ pub fn get_post_by_id(id: usize, content: String) -> String {
 pub fn str_to_post(post_str: String) -> Option<Post> {
     let post_v: Value = serde_json::from_str(&post_str).unwrap();
     
-    let image_url: String = post_v["node"]["display_url"].to_string();
+    let image_url: String = match post_v["node"]["display_url"].as_str() {
+        None => "".to_string(),
+        Some(u) => u.to_string(),
+    };
 
     // if there isn't any image_url, the whole post is nonexistant, therefore return none
     // also, this is done right after "parsing" image_url, becuase otherwise the unwrap for unix_timestamp would cause panic
@@ -35,19 +38,14 @@ pub fn str_to_post(post_str: String) -> Option<Post> {
     let unix_timestamp: i64 = post_v["node"]["taken_at_timestamp"].to_string().parse::<i64>().unwrap();
     let timestamp: String = NaiveDateTime::from_timestamp(unix_timestamp, 0).to_string();
 
-    let caption: String = post_v["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"].to_string();
+    let caption: Option<String> = match post_v["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"].as_str() {
+        None => None,
+        Some(c) => Some(c.to_string()),
+    };
 
-    if caption == "null".to_string() {
-        Some(Post {
-            caption: None,
-            image_url,
-            timestamp,
-        })
-    } else {
-        Some(Post {
-            caption: Some(caption),
-            image_url,
-            timestamp,
-        })
-    }
+    Some(Post {
+        caption: caption,
+        image_url,
+        timestamp,
+    })
 }
