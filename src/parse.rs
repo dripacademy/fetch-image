@@ -8,14 +8,12 @@ pub struct Post {
     pub timestamp: NaiveDateTime,
 }
 
-fn read_file(filepath: String) -> String {
+pub fn read_file(filepath: String) -> String {
     fs::read_to_string(filepath).expect("Could not read file")
 }
 
-pub fn get_post_by_id(id: usize, filepath: String) -> String {
-    let json = read_file(filepath);
-    
-    let v: Value = serde_json::from_str(&json).unwrap();
+pub fn get_post_by_id(id: usize, content: String) -> String {
+    let v: Value = serde_json::from_str(&content).unwrap();
 
     v["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][id].to_string()
 }
