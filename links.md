@@ -12,6 +12,7 @@
 ## Rust
 
 - [reqwest](https://docs.rs/reqwest)
+- [process untyped json](https://github.com/serde-rs/json#operating-on-untyped-json-values)
 
 ## Instagram API
 
