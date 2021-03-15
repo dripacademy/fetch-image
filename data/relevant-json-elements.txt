@@ -1,0 +1,9 @@
+# relevant json elements:
+
+## profile
+userame: graphql.user.username
+post count: graphql.user.edge_owner_to_timeline_media.count
+
+# post
+post1 image url: graphql.user.edge_owner_to_timeline_media.edges[0].node.display_url
+post1 caption (may be null): graphql.user.edge_owner_to_timeline_media.edges[0].node.edge_media_to_caption.edges[0].node.text
