@@ -1,11 +1,13 @@
 use std::fs;
 use chrono::{NaiveDateTime};
+use serde::{Serialize, Deserialize};
 use serde_json::{Value};
 
+#[derive(Serialize,Deserialize)]
 pub struct Post {
     pub caption: Option<String>,
     pub image_url: String,
-    pub timestamp: NaiveDateTime,
+    pub timestamp: String,
 }
 
 pub fn read_file(filepath: String) -> String {
@@ -31,10 +33,9 @@ pub fn str_to_post(post_str: String) -> Option<Post> {
     }
 
     let unix_timestamp: i64 = post_v["node"]["taken_at_timestamp"].to_string().parse::<i64>().unwrap();
-    let timestamp: NaiveDateTime = NaiveDateTime::from_timestamp(unix_timestamp, 0);
+    let timestamp: String = NaiveDateTime::from_timestamp(unix_timestamp, 0).to_string();
 
     let caption: String = post_v["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"].to_string();
-
 
     if caption == "null".to_string() {
         Some(Post {
