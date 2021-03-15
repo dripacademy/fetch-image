@@ -13,6 +13,7 @@
 
 - [reqwest](https://docs.rs/reqwest)
 - [process untyped json](https://github.com/serde-rs/json#operating-on-untyped-json-values)
+- [reqwest use tor proxy](https://github.com/seanmonstar/reqwest/blob/master/examples/tor_socks.rs)
 
 ## Instagram API
 

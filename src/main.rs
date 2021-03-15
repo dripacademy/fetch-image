@@ -37,5 +37,4 @@ fn main() {
             Some(v) => debug!("{}", v.image_url),
         }
     }
-
 }
