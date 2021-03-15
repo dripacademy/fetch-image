@@ -16,19 +16,38 @@ lines.forEach(l => {
 });
 
 (async () => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: {
+            "--incognito',
+        },
+        headless: false,
+    );
 
     const page = await browser.newPage();
     await page.setViewpost({width: 1200, height: 720});
     await page.goto("https://www.instagram.com/accounts/login");
 
-    await page.type("[name='username']", config["USERNAME"], {delay: 100});
-    await page.type("[name='password']", config["PASSWORD"], {delay: 100});
+    Authenticate(page, config["USERNAME"], config["PASSWORD"]);
 
-    await Promise.all([
+    // jesus.nr1 placeholder accountUrl
+    await ScrapeImages(page, "https://www.instagram.com/jesus.nr1");
+})
+
+async function Authenticate(page, username, password) {
+    await page.type("[name='username']", username, {delay: 100});
+    await page.type("[name='password']", password, {delay: 100});
+    await page.click("[type='submit']");
+    page.waitForSelector("[placeholder='Search']", { state: "visible" });
+
+    /*await Promise.all([
         // hopefully types enter
         await page.keyboard.type("\n"),
         page.waitForNavigation({waitUntil: "networkidle0"}),
-    ]);
-})
+    ]);*/
+}
+
+async function ScrapeImages(page, accountUrl) {
+    await page.goto(accountUrl);
+
+}
 

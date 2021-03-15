@@ -28,4 +28,6 @@
 ## npm / puppeteer
 
 - [puppeteer docs](https://pptr.dev/)
+- [article scrape instag](https://medium.com/@alexdimango/instagrams-image-like-scraping-with-puppeteer-and-node-js-in-five-minutes-addeaa56045d)
+- [long yt tutorial](https://www.youtube.com/watch?v=rzA81j8UADQ)
 
