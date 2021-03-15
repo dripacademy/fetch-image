@@ -24,3 +24,8 @@
 
 - [connect to ig api](https://rapidapi.com/blog/how-to-navigate-and-connect-to-instagrams-api/)
 - [[official] get media from profile](https://developers.facebook.com/docs/instagram-api/reference/ig-user/media#get-media)
+
+## npm / puppeteer
+
+- [puppeteer docs](https://pptr.dev/)
+
