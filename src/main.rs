@@ -21,10 +21,13 @@ fn main() {
 
     for acc in account_list.split(',').collect::<Vec<_>>() {
         // using unix timestamp
-        let filename = format!("{}-{}", Utc::now().format("%s"), acc.to_string());
-        fs::write(filename, fetch::get_profile_info(acc.to_string())).unwrap();
+        let filename = format!("./data/{}-{}.json", Utc::now().format("%s"), acc.to_string());
+        let data = fetch::get_profile_info(acc.to_string());
+        if !data.is_empty() {
+            fs::write(filename.to_string(), data).unwrap();
 
-        info!("Wrote file: {}", filename.to_string());
+            info!("Wrote file: {}", filename);
+        }
     }
 
     let mut posts_str: Vec<String> = Vec::new();
