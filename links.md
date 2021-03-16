@@ -31,3 +31,8 @@
 - [article scrape instag](https://medium.com/@alexdimango/instagrams-image-like-scraping-with-puppeteer-and-node-js-in-five-minutes-addeaa56045d)
 - [long yt tutorial](https://www.youtube.com/watch?v=rzA81j8UADQ)
 
+## Similar Programs
+
+- [InstaPy](https://github.com/timgrossmann/InstaPy)
+- [InstagramScraper](https://github.com/arc298/instagram-scraper)
+

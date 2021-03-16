@@ -29,34 +29,39 @@ lines.forEach(l => {
         if (button) {
             await button.click();
         }
-
     } catch(error) {
         console.error(error)
     }
 
+    //LogIn(page, config["USERNAME"], config["PASSWORD"]);
+
+    await page.waitForSelector("[placeholder='Search']", { state: "visible" });
+
+    // jesus.nr1 placeholder accountUrl
+    let imgs = await ScrapeImages(page, "https://www.instagram.com/jesus.nr1", 20);
+
+    console.log(imgs);
+
+    // no longer needed
+    await browser.disconnect();
+})();
+
+async function LogIn(page, username, password) {
     try {
-        await page.type("[name='username']", config["USERNAME"], {delay: 207});
-        await page.type("[name='password']", config["PASSWORD"], {delay: 430});
+        await page.type("[name='username']", username, {delay: 207});
+        await page.type("[name='password']", password, {delay: 430});
         await page.click("[type='submit']", {delay: 1374});
         await page.waitForSelector("[placeholder='Search']", { state: "visible" });
         console.log("logged in!");
     } catch(error) {
         console.error(error)
     }
+}
 
-    // jesus.nr1 placeholder accountUrl
-    //let imgs = await ScrapeImages(page, "https://www.instagram.com/jesus.nr1", 20);
-
-    // no longer needed
-    await browser.disconnect();
-})();
-
-/*async function ScrapeImages(page, accountUrl, maxItemCount) {
-    this.maxItemCount = maxItemCount
+async function ScrapeImages(page, accountUrl, maxItemCount) {
     var page = this.page
     let previousHeight
     var media = new Set()
-    var index = `.`
 
     await page.goto(accountUrl);
 
@@ -66,7 +71,6 @@ lines.forEach(l => {
             await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`)
             await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`)
             await page.waitFor(1000)
-            this.spinner.text = chalk.yellow(`Scrolling${index}`)
 
             const nodes = await page.evaluate(() => {
                 const images = document.querySelectorAll(`a > div > div.KL4Bh > img`)
@@ -78,14 +82,11 @@ lines.forEach(l => {
                     media.add(element)
                 }
             })
-
-            index = index + `.`
         }
         catch (error) {
             console.error(error)
-            break
         }
     }
 
     return media
-}*/
+}
