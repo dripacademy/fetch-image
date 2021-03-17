@@ -1,51 +1,59 @@
 const puppeteer = require("puppeteer");
 
 const instagram = {
-    broser: null,
+    browser: null,
     page: null,
+    baseUrl: "https://www.instagram.com/",
 
     initialize: async () => {
-        const browser = await puppeteer.launch({
+        instagram.browser = await puppeteer.launch({
             headless: false,
         });
 
-        const page = await browser.newPage();
-        await page.setViewport({width: 1200, height: 720});
+        instagram.page = await instagram.browser.newPage();
+        await instagram.page.setViewport({width: 1200, height: 720});
 
-        await page.goto("https://www.instagram.com", {waitUntil: "networkidle2"});
+        await instagram.page.goto(instagram.baseUrl, {waitUntil: "networkidle2"});
     },
 
-    login: async(username, password) => {
-        await page.goto("https://www.instagram.com/accounts/login", {waitUntil: "networkidle2"});
-
-        const [button] = await page.$x("//button[contains(., 'Accept')]");
+    acceptCookies: async() => {
+        const [button] = await instagram.page.$x("//button[contains(., 'Accept')]");
         if (button) {
             await button.click();
         }
+    },
 
-        await page.type("[name='username']", username, {delay: 300});
-        await page.type("[name='password']", password, {delay: 300});
-        await page.click("[type='submit']", {delay: 500});
+    login: async(username, password) => {
+        await instagram.page.goto(instagram.baseUrl+"accounts/login", {waitUntil: "networkidle2"});
+
+        await instagram.page.type("[name='username']", username, {delay: 300});
+        await instagram.page.type("[name='password']", password, {delay: 300});
+        //await instagram.page.click("[type='submit']", {delay: 500});
         // wait for 5 seconds, to finish loading
-        await page.waitFor(5000);
-        //await page.waitForSelector("[placeholder='Search']", { state: "visible" });
+        //await instagram.page.waitFor(5000);
+
+        await Promise.all([
+            await instagram.page.click("[type='submit']", {delay: 500}),
+            await instagram.page.waitForNavigation({ waitUntil: 'networkidle2' })
+        ]);
     },
 
     scrapeImages: async (username, maxItemCount) => {
-        var page = this.page
         let previousHeight
         var media = new Set()
 
-        await page.goto(accountUrl);
+        await instagram.page.goto(instagram.baseUrl+username);
 
         while (maxItemCount == null || media.size < maxItemCount) {
             try {
-                previousHeight = await page.evaluate(`document.body.scrollHeight`)
-                await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`)
-                await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`)
-                await page.waitFor(1000)
+                previousHeight = await instagram.page.evaluate(`document.body.scrollHeight`)
+                await instagram.page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`)
+                await instagram.page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`)
+                await instagram.page.waitFor(1000)
 
-                const nodes = await page.evaluate(() => {
+                const nodes = await instagram.page.evaluate(() => {
+                    /*const post = document.querySelectorAll(`article > div > div > div > div > a`);
+                    console.log(link);*/
                     const images = document.querySelectorAll(`a > div > div.KL4Bh > img`)
                     return [].map.call(images, img => img.src)
                 })
@@ -65,4 +73,4 @@ const instagram = {
     }
 }
 
-module.exports = [instagram];
+module.exports = instagram;

@@ -16,12 +16,23 @@ lines.forEach(l => {
 });
 
 (async () => {
-    const ig = await instagram.initialize();
+    await ig.initialize();
+    await ig.acceptCookies();
+    await ig.login(config["USERNAME"], config["PASSWORD"]);
 
-    await page.waitForSelector("[placeholder='Search']", { state: "visible" });
+    config["ACCOUNT_LIST"].forEach(async (username) => {
+        const date = Date.now();
+        const [month, day, year] = date.toLocaleDateString("en-US").split("/");
+        const [hour, minute, _] = date.toLocaleTimeString("en-US").split(/:| /)
 
-    // jesus.nr1 placeholder accountUrl
-    let imgs = await ScrapeImages(page, "https://www.instagram.com/jesus.nr1", 20);
+        const filename = year+"-"+month+"-"+day+"_"+hour+"-"+minute+"_"+username+".json";
 
-    console.log(imgs);
+        const images = await ig.scrapeImages(username, 100);
+
+        fs.writeFileSync(
+            config["JSON_FILES"] + filename,
+            JSON.stringify(images, null, 2)
+        );
+    })
+
 })();
