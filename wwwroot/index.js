@@ -18,21 +18,22 @@ lines.forEach(l => {
 (async () => {
     await ig.initialize();
     await ig.acceptCookies();
-    await ig.login(config["USERNAME"], config["PASSWORD"]);
+    //await ig.login(config["USERNAME"], config["PASSWORD"]);
 
-    config["ACCOUNT_LIST"].forEach(async (username) => {
-        const date = Date.now();
-        const [month, day, year] = date.toLocaleDateString("en-US").split("/");
-        const [hour, minute, _] = date.toLocaleTimeString("en-US").split(/:| /)
-
-        const filename = year+"-"+month+"-"+day+"_"+hour+"-"+minute+"_"+username+".json";
+    config["ACCOUNT_LIST"].split(",").forEach(async (username) => {
+        const date = new Date();
+        const filename = date.getFullYear() + "-" +
+                        (date.getMonth() + 1) + "-" +
+                        date.getDate() + "_" +
+                        date.getHours() + "-" +
+                        date.getMinutes() + "-" +
+                        date.getSeconds()+"_"+username + ".json";
 
         const images = await ig.scrapeImages(username, 100);
 
         fs.writeFileSync(
-            config["JSON_FILES"] + filename,
+            "../" + config["JSON_FILES"] + filename,
             JSON.stringify(images, null, 2)
         );
     })
-
 })();
