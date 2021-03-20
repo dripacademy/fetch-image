@@ -8,6 +8,9 @@ const instagram = {
     initialize: async () => {
         instagram.browser = await puppeteer.launch({
             headless: false,
+            args: [
+                "--lang=en",
+            ]
         });
 
         instagram.page = await instagram.browser.newPage();
@@ -34,7 +37,7 @@ const instagram = {
 
         await Promise.all([
             await instagram.page.click("[type='submit']", {delay: 500}),
-            await instagram.page.waitForNavigation({ waitUntil: 'networkidle2' })
+            await instagram.page.waitForNavigation({ waitUntil: 'networkidle0' })
         ]);
     },
 
