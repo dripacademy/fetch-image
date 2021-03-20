@@ -41,6 +41,38 @@ const instagram = {
         ]);
     },
 
+    scrapePostLinks: async (username, maxItemCount) => {
+        let previousHeight
+        var media = new Set()
+
+        await instagram.page.goto(instagram.baseUrl+username);
+
+        while (maxItemCount == null || media.size < maxItemCount) {
+            try {
+                previousHeight = await instagram.page.evaluate(`document.body.scrollHeight`)
+                await instagram.page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`)
+                await instagram.page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`)
+                await instagram.page.waitFor(1000)
+
+                const nodes = await instagram.page.evaluate(() => {
+                    const posts = document.querySelectorAll(`article > div > div > div > div > a`);
+                    return [].map.call(posts, post => post.href)
+                })
+
+                nodes.forEach(element => {
+                    if (media.size < maxItemCount) {
+                        media.add(element)
+                    }
+                })
+            }
+            catch (error) {
+                console.error(error)
+            }
+        }
+
+        return media
+    },
+
     scrapeImages: async (username, maxItemCount) => {
         let previousHeight
         var media = new Set()
@@ -55,8 +87,6 @@ const instagram = {
                 await instagram.page.waitFor(1000)
 
                 const nodes = await instagram.page.evaluate(() => {
-                    /*const post = document.querySelectorAll(`article > div > div > div > div > a`);
-                    console.log(link);*/
                     const images = document.querySelectorAll(`a > div > div.KL4Bh > img`)
                     return [].map.call(images, img => img.src)
                 })

@@ -18,7 +18,7 @@ lines.forEach(l => {
 (async () => {
     await ig.initialize();
     await ig.acceptCookies();
-    //await ig.login(config["USERNAME"], config["PASSWORD"]);
+    await ig.login(config["USERNAME"], config["PASSWORD"]);
 
     config["ACCOUNT_LIST"].split(",").forEach(async (username) => {
         const date = new Date();
