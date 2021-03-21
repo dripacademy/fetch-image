@@ -1,7 +1,7 @@
 {
-  "name": "scrape-ig",
-  "version": "0.2.0",
-  "description": "Scrape Images from Instagram Profiles",
+  "name": "scrape-posts",
+  "version": "0.1.0",
+  "description": "Scrape Posts from Instagram Profiles, save the info in JSON file.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
