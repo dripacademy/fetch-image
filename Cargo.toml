@@ -10,6 +10,10 @@ edition = "2018"
 name = "scrape"
 path = "src/scrape/main.rs"
 
+[[bin]]
+name = "scrape2"
+path = "src/scrape2/main.rs"
+
 [dependencies]
 # env vars
 dotenv = "0.15"
@@ -27,5 +31,8 @@ serde_json = "1.0"
 
 # time
 chrono = "0.4"
+
+# webdriver
+thirtyfour_sync = "0.22"
 
 # telegram bot api/lib
