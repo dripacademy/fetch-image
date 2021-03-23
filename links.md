@@ -35,6 +35,11 @@
 
 - [Postgres.js](https://github.com/porsager/postgres)
 
+## Go
+
+Golang Scraper
+- [Rod](https://github.com/go-rod/rod)
+
 ## Similar Programs
 
 - [InstaPy](https://github.com/timgrossmann/InstaPy)
